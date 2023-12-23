@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-schedule
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-schedule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-schedule
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-schedule
+    spec:
+      containers:
+        - name: appwrite-worker-schedule
+          image: appwrite/appwrite:latest
+          command: ["schedule"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

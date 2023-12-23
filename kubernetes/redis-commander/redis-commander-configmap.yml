@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-commander-configmap
+  namespace: appwrite
+data:
+  REDIS_HOSTS: "redis-service"

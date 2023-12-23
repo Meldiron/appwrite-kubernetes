@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maildev-service
+  namespace: appwrite
+spec:
+  type: ClusterIP
+  selector:
+    app: maildev
+  ports:
+    - protocol: TCP
+      name: http
+      port: 1080
+      targetPort: 1080
+    - protocol: TCP
+      name: smtp
+      port: 1025
+      targetPort: 1025

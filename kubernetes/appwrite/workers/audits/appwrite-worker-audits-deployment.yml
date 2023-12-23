@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-audits
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-audits
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-audits
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-audits
+    spec:
+      containers:
+        - name: appwrite-worker-audits
+          image: appwrite/appwrite:latest
+          command: ["worker-audits"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

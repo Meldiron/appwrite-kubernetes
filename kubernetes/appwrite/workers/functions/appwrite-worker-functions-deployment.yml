@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-functions
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-functions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-functions
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-functions
+    spec:
+      containers:
+        - name: appwrite-worker-functions
+          image: appwrite/appwrite:latest
+          command: ["worker-functions"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

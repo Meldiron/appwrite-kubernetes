@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-maintenance
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-maintenance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-maintenance
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-maintenance
+    spec:
+      containers:
+        - name: appwrite-worker-maintenance
+          image: appwrite/appwrite:latest
+          command: ["maintenance"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

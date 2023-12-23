@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appwrite-assistant-configmap
+  namespace: appwrite
+data:
+  _APP_ASSISTANT_OPENAI_API_KEY: ""

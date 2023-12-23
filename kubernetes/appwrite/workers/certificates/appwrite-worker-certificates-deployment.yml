@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-certificates
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-certificates
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-certificates
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-certificates
+    spec:
+      volumes:
+        - name: appwrite-config-volume
+          persistentVolumeClaim:
+            claimName: appwrite-config-pvc
+        - name: appwrite-certificates-volume
+          persistentVolumeClaim:
+            claimName: appwrite-certificates-pvc
+      containers:
+        - name: appwrite-worker-certificates
+          image: appwrite/appwrite:latest
+          command: ["worker-certificates"]
+          volumeMounts:
+            - name: appwrite-config-volume
+              mountPath: /storage/config
+            - name: appwrite-certificates-volume
+              mountPath: /storage/certificates
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: appwrite
+  labels:
+    app: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      volumes:
+        - name: mariadb-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+      containers:
+        - name: mariadb
+          image: mariadb:10.7
+          # command: ["mysqld"]
+          # args: ["--innodb-flush-method=fsync", "--user=root"]
+          volumeMounts:
+            - name: mariadb-volume
+              mountPath: /var/lib/mysql
+          envFrom:
+            - configMapRef:
+                name: mariadb-configmap

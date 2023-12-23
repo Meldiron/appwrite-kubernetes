@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-databases
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-databases
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-databases
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-databases
+    spec:
+      containers:
+        - name: appwrite-worker-databases
+          image: appwrite/appwrite:latest
+          command: ["worker-databases"]
+          env:
+            - name: _APP_WORKERS_NUM
+              value: "1"
+            - name: _APP_QUEUE_NAME
+              value: ""
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

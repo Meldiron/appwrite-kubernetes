@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-webhooks
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-webhooks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-webhooks
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-webhooks
+    spec:
+      containers:
+        - name: appwrite-worker-webhooks
+          image: appwrite/appwrite:latest
+          command: ["worker-webhooks"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

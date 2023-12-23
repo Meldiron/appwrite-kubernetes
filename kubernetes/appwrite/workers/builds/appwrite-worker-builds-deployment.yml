@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-builds
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-builds
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-builds
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-builds
+    spec:
+      volumes:
+        - name: appwrite-functions-volume
+          persistentVolumeClaim:
+            claimName: appwrite-functions-pvc
+        - name: appwrite-builds-volume
+          persistentVolumeClaim:
+            claimName: appwrite-builds-pvc
+      containers:
+        - name: appwrite-worker-builds
+          image: appwrite/appwrite:latest
+          command: ["worker-builds"]
+          volumeMounts:
+            - name: appwrite-functions-volume
+              mountPath: /storage/functions
+            - name: appwrite-builds-volume
+              mountPath: /storage/builds
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-migrations
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-migrations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-migrations
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-migrations
+    spec:
+      containers:
+        - name: appwrite-worker-migrations
+          image: appwrite/appwrite:latest
+          command: ["worker-migrations"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

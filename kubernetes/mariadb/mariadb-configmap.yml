@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-configmap
+  namespace: appwrite
+data:
+  MYSQL_ROOT_PASSWORD: "rootsecretpassword"
+  MYSQL_DATABASE: "appwrite"
+  MYSQL_USER: "user"
+  MYSQL_PASSWORD: "password"

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-realtime
+  namespace: appwrite
+  labels:
+    app: appwrite-realtime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-realtime
+  template:
+    metadata:
+      labels:
+        app: appwrite-realtime
+    spec:
+      containers:
+        - name: appwrite-realtime
+          image: appwrite/appwrite:latest
+          command: ["realtime"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

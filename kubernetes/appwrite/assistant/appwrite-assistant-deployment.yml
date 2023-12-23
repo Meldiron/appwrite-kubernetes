@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-assistant
+  namespace: appwrite
+  labels:
+    app: appwrite-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-assistant
+  template:
+    metadata:
+      labels:
+        app: appwrite-assistant
+    spec:
+      containers:
+        - name: appwrite-api
+          image: appwrite/assistant:0.2.2
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap
+            - configMapRef:
+                name: appwrite-assistant-configmap

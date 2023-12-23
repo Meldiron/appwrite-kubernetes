@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-worker-messaging
+  namespace: appwrite
+  labels:
+    app: appwrite-worker-messaging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-worker-messaging
+  template:
+    metadata:
+      labels:
+        app: appwrite-worker-messaging
+    spec:
+      containers:
+        - name: appwrite-worker-messaging
+          image: appwrite/appwrite:latest
+          command: ["worker-messaging"]
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap

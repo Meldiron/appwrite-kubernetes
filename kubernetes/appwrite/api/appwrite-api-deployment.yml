@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwrite-api
+  namespace: appwrite
+  labels:
+    app: appwrite-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appwrite-api
+  template:
+    metadata:
+      labels:
+        app: appwrite-api
+    spec:
+      volumes:
+        - name: appwrite-cache-volume
+          persistentVolumeClaim:
+            claimName: appwrite-cache-pvc
+        - name: appwrite-uploads-volume
+          persistentVolumeClaim:
+            claimName: appwrite-uploads-pvc
+        - name: appwrite-config-volume
+          persistentVolumeClaim:
+            claimName: appwrite-config-pvc
+        - name: appwrite-certificates-volume
+          persistentVolumeClaim:
+            claimName: appwrite-certificates-pvc
+        - name: appwrite-functions-volume
+          persistentVolumeClaim:
+            claimName: appwrite-functions-pvc
+        - name: appwrite-builds-volume
+          persistentVolumeClaim:
+            claimName: appwrite-builds-pvc
+      containers:
+        - name: appwrite-api
+          image: appwrite/appwrite:latest
+          # command: ["php"]
+          # args: ["-e", "app/http.php", "-dopcache.preload=opcache.preload=/usr/src/code/app/preload.php"]
+          volumeMounts:
+            - name: appwrite-cache-volume
+              mountPath: /storage/cache
+            - name: appwrite-uploads-volume
+              mountPath: /storage/uploads
+            - name: appwrite-config-volume
+              mountPath: /storage/config
+            - name: appwrite-certificates-volume
+              mountPath: /storage/certificates
+            - name: appwrite-functions-volume
+              mountPath: /storage/functions
+            - name: appwrite-builds-volume
+              mountPath: /storage/builds
+          envFrom:
+            - configMapRef:
+                name: appwrite-configmap
